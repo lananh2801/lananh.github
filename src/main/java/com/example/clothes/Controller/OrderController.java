@@ -12,7 +12,7 @@ public class OrderController {
     @Autowired
     OrderService orderService;
 
-    @PostMapping("add-order")
+    @PostMapping(value = "add-order")
     public OrderResponseDTO addOrder(@RequestBody OrderRequestDTO orderRequestDTO) {
         return orderService.addOrder(orderRequestDTO);
     }
