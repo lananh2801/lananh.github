@@ -24,4 +24,9 @@ public class ProductController {
     public ProductResponseDTO getProduct(@RequestParam Long id) {
         return productService.getProduct(id);
     }
+
+    @DeleteMapping ("/delete-product")
+    public void deleteProduct(@RequestParam Long id) {
+        productService.deleteProduct(id);
+    }
 }

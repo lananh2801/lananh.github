@@ -12,4 +12,6 @@ public interface ProductService {
 
     ProductResponseDTO getProduct(Long id);
 
+    void deleteProduct(Long id);
+
 }
