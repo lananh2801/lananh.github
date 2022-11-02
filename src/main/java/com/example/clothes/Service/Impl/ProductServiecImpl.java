@@ -10,6 +10,7 @@ import com.example.clothes.Repository.ProductTypeRepository;
 import com.example.clothes.Service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,5 +42,9 @@ public class ProductServiecImpl implements ProductService {
         Product product =  productRepository.getById(id);
         ProductResponseDTO productResponseDTO = productConvert.toDTO(product);
         return productResponseDTO;
+    }
+    @Override
+    public void deleteProduct(Long id) {
+        productRepository.deleteProductById(id);
     }
 }
