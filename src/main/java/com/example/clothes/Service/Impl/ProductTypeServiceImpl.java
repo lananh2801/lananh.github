@@ -4,10 +4,12 @@ import com.example.clothes.Convert.ProductTypeConvert;
 import com.example.clothes.DTO.Request.ProductTypeRequestDTO;
 import com.example.clothes.DTO.Response.ProductTypeResponseDTO;
 import com.example.clothes.Entity.ProductType;
+import com.example.clothes.Repository.ProductRepository;
 import com.example.clothes.Repository.ProductTypeRepository;
 import com.example.clothes.Service.ProductTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ProductTypeServiceImpl implements ProductTypeService {
@@ -17,6 +19,9 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 
     @Autowired
     ProductTypeConvert productTypeConvert;
+
+    @Autowired
+    ProductRepository productRepository;
 
     @Override
     public ProductTypeResponseDTO addProductType(ProductTypeRequestDTO productTypeRequestDTO) {
@@ -32,5 +37,11 @@ public class ProductTypeServiceImpl implements ProductTypeService {
          ProductType productType = productTypeRepository.findById(id).get();
         ProductTypeResponseDTO productTypeResponseDTO = productTypeConvert.toDTO(productType);
          return productTypeResponseDTO;
+    }
+    @Transactional
+    @Override
+    public void deleteProductType(Long id) {
+        productRepository.deleteProductsById(id);
+        productTypeRepository.deleteProductTypeById(id);
     }
 }
