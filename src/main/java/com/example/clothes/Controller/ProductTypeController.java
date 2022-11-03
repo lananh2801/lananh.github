@@ -23,4 +23,9 @@ public class ProductTypeController {
     public ProductTypeResponseDTO getProductType(@RequestParam Long id) {
         return productTypeService.getProductType(id);
     }
+
+    @DeleteMapping("delete-product-type")
+    public void deleteProductType(@RequestParam Long id) {
+        productTypeService.deleteProductType(id);
+    }
 }
