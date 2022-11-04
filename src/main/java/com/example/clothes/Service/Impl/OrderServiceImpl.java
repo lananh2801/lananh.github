@@ -12,6 +12,7 @@ import com.example.clothes.Entity.Order;
 import com.example.clothes.Entity.OrderProduct;
 import com.example.clothes.Entity.Product;
 import com.example.clothes.Entity.User;
+import com.example.clothes.Exception.NotFoundException;
 import com.example.clothes.Repository.OrderProductRepository;
 import com.example.clothes.Repository.OrderRepository;
 import com.example.clothes.Repository.ProductRepository;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -111,5 +113,55 @@ public class OrderServiceImpl implements OrderService {
     public void deleteOrderById(Long id) {
             orderProductRepository.deleteOrderProductsByOrderNo(id);
             orderRepository.deleteByOrderNo(id);
+    }
+    @Transactional
+    @Override
+    public OrderResponseDTO updateOrder(OrderRequestDTO orderRequestDTO) {
+        if (orderRequestDTO.getOrderNo() != null && orderRequestDTO.getUserNo() != null) {
+            Optional<Order> orderOptional = orderRepository.findById(orderRequestDTO.getOrderNo());
+            Optional<User> userOptional = userRepository.findById(orderRequestDTO.getUserNo());
+
+            orderProductRepository.deleteOrderProductsByOrderNo(orderRequestDTO.getOrderNo());
+            List<ProductRequestDTO> productRequestDTOList = orderRequestDTO.getProductRequestDTOS();
+
+            List<OrderProduct> orderProducts = new ArrayList<>();
+            for (ProductRequestDTO productRequestDTO : productRequestDTOList) {
+                Optional<Product> productOptional = productRepository.findById(productRequestDTO.getProductNo());
+
+                if (!orderOptional.isPresent() || !userOptional.isPresent() || !productOptional.isPresent()) {
+                    throw new NotFoundException("Order or User is null");
+                }
+                Order order = orderOptional.get();
+                order = orderConvert.toEntity(orderRequestDTO);
+                User user = userOptional.get();
+                order.setUser(user);
+                orderRepository.save(order);
+
+                OrderProduct orderProduct = new OrderProduct();
+                Product product = productOptional.get();
+                orderProduct.setOrder(order);
+                orderProduct.setProduct(product);
+                orderProducts.add(orderProduct);
+            }
+                orderOptional.get().setOrderProducts(orderProducts);
+                orderProductRepository.saveAll(orderProducts);
+
+                OrderResponseDTO orderResponseDTO = orderConvert.toDTO(orderOptional.get());
+                UserResponseDTO userResponseDTO = userConvert.toDTO(userOptional.get());
+                orderResponseDTO.setUserResponseDTO(userResponseDTO);
+                List<ProductResponseDTO> productResponseDTOList = new ArrayList<>();
+                BigDecimal total = BigDecimal.ZERO;
+
+                for(OrderProduct orderProduct : orderProducts) {
+                    ProductResponseDTO productResponseDTO = productConvert.toDTO(orderProduct.getProduct());
+                    productResponseDTOList.add(productResponseDTO);
+                    total = total.add(orderProduct.getProduct().getPrice());
+                }
+                orderResponseDTO.setProductResponseDTOList(productResponseDTOList);
+                orderResponseDTO.setAmountOfMoney(total);
+                return orderResponseDTO;
+            }
+
+        return new OrderResponseDTO();
     }
 }
