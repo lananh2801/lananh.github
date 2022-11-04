@@ -28,4 +28,9 @@ public class ProductTypeController {
     public void deleteProductType(@RequestParam Long id) {
         productTypeService.deleteProductType(id);
     }
+
+    @PutMapping("update-product-type")
+    public ProductTypeResponseDTO updateProductType(@RequestBody ProductTypeRequestDTO productTypeRequestDTO) {
+        return productTypeService.updateProductType(productTypeRequestDTO);
+    }
 }

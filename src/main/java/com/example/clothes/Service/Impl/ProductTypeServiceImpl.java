@@ -4,12 +4,15 @@ import com.example.clothes.Convert.ProductTypeConvert;
 import com.example.clothes.DTO.Request.ProductTypeRequestDTO;
 import com.example.clothes.DTO.Response.ProductTypeResponseDTO;
 import com.example.clothes.Entity.ProductType;
+import com.example.clothes.Exception.NotFoundException;
 import com.example.clothes.Repository.ProductRepository;
 import com.example.clothes.Repository.ProductTypeRepository;
 import com.example.clothes.Service.ProductTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 public class ProductTypeServiceImpl implements ProductTypeService {
@@ -43,5 +46,20 @@ public class ProductTypeServiceImpl implements ProductTypeService {
     public void deleteProductType(Long id) {
         productRepository.deleteProductsById(id);
         productTypeRepository.deleteProductTypeById(id);
+    }
+
+    @Override
+    public ProductTypeResponseDTO updateProductType(ProductTypeRequestDTO productTypeRequestDTO) {
+        if (productTypeRequestDTO.getProductTypeNo() != null) {
+            Optional<ProductType> productTypeOptional = productTypeRepository.findById(productTypeRequestDTO.getProductTypeNo());
+            if (!productTypeOptional.isPresent()) {
+                throw new NotFoundException("ProductType is null");
+            }
+            ProductType productType = productTypeConvert.toEntity(productTypeRequestDTO);
+
+            ProductTypeResponseDTO productTypeResponseDTO = productTypeConvert.toDTO(productType);
+            return productTypeResponseDTO;
+        }
+        return new ProductTypeResponseDTO();
     }
 }
