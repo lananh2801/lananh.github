@@ -10,5 +10,5 @@ public interface OrderService {
 
     OrderResponseDTO getOrder(Long id);
 
-    void deteleOrderById(Long id);
+    void deleteOrderById(Long id);
 }
