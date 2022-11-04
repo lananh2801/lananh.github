@@ -10,6 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     @Modifying
-    @Query("delete from User where userNo = :id")
-    public void deleteById(Long id);
+    @Query("delete from User where userNo = :userNo")
+    public void deleteByUserNo(Long userNo);
 }

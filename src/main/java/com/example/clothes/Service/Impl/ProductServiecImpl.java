@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductServiecImpl implements ProductService {
@@ -27,14 +28,20 @@ public class ProductServiecImpl implements ProductService {
 
     @Override
     public ProductResponseDTO addProduct(ProductRequestDTO productRequestDTO) {
-        Product product = productConvert.toEntity(productRequestDTO);
-        ProductType productType = productTypeRepository.getById(productRequestDTO.getProductTypeNo());
-        product.setProductType(productType);
-        product = productRepository.save(product);
+        if (productRequestDTO.getProductTypeNo() != null) {
+            Optional<ProductType> productType = productTypeRepository.findById(productRequestDTO.getProductTypeNo());
+            if (!productType.isPresent() ) {
+                throw new NullPointerException("ProductType is null");
+            }
+                Product product = productConvert.toEntity(productRequestDTO);
+                product.setProductType(productType.get());
+                product = productRepository.save(product);
 
-        ProductResponseDTO productResponseDTO = productConvert.toDTO(product);
+                ProductResponseDTO productResponseDTO = productConvert.toDTO(product);
 
-        return productResponseDTO;
+                return productResponseDTO;
+        }
+        return new ProductResponseDTO();
     }
 
     @Override
