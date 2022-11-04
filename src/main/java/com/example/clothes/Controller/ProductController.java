@@ -29,4 +29,9 @@ public class ProductController {
     public void deleteProduct(@RequestParam Long id) {
         productService.deleteProduct(id);
     }
+
+    @PutMapping("update-product")
+    public ProductResponseDTO updateProduct(@RequestBody ProductRequestDTO productRequestDTO) {
+        return productService.updateProduct(productRequestDTO);
+    }
 }

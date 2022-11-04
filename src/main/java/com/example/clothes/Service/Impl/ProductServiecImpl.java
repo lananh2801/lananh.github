@@ -55,4 +55,24 @@ public class ProductServiecImpl implements ProductService {
     public void deleteProduct(Long id) {
         productRepository.deleteProductById(id);
     }
+
+    @Override
+    public ProductResponseDTO updateProduct(ProductRequestDTO productRequestDTO) {
+        if (productRequestDTO.getProductNo() != null && productRequestDTO.getProductTypeNo() != null) {
+            Optional<Product> productOptional = productRepository.findById(productRequestDTO.getProductNo());
+            Optional<ProductType> productTypeOptional = productTypeRepository.findById(productRequestDTO.getProductTypeNo());
+            if (!productOptional.isPresent() || !productTypeOptional.isPresent()) {
+                throw new NotFoundException("Product or ProductType is null");
+            }
+            Product product = productConvert.toEntity(productRequestDTO);
+            ProductType productType = productTypeOptional.get();
+            product.setProductType(productType);
+
+            productRepository.save(product);
+
+            ProductResponseDTO productResponseDTO = productConvert.toDTO(product);
+            return productResponseDTO;
+        }
+        return new ProductResponseDTO();
+    }
 }
