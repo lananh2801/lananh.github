@@ -15,4 +15,8 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Modifying
     @Query("delete from Order where oderNo = :id")
     public void deleteById(Long id);
+
+    @Modifying
+    @Query("delete from Order where user.userNo = :userNo")
+    public void deleteUserByUserNo(Long userNo);
 }
