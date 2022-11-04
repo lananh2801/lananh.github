@@ -4,6 +4,7 @@ import com.example.clothes.Convert.UserConvert;
 import com.example.clothes.DTO.Request.UserRequestDTO;
 import com.example.clothes.DTO.Response.UserResponseDTO;
 import com.example.clothes.Entity.User;
+import com.example.clothes.Exception.NotFoundException;
 import com.example.clothes.Repository.OrderProductRepository;
 import com.example.clothes.Repository.OrderRepository;
 import com.example.clothes.Repository.UserRepository;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -57,5 +59,24 @@ public class UserServiceImpl implements UserService {
         orderProductRepository.deleteOrderProductsByUserNo(userNo);
         orderRepository.deleteUserByUserNo(userNo);
         userRepository.deleteByUserNo(userNo);
+    }
+
+    @Override
+    public UserResponseDTO updateUser(UserRequestDTO userRequestDTO) {
+        if (userRequestDTO.getUserNo() != null) {
+            Optional<User> userOptional = userRepository.findById(userRequestDTO.getUserNo());
+            if (!userOptional.isPresent()) {
+                throw new NotFoundException("User is null");
+            }
+            User user = userOptional.get();
+            user = userConvert.toEntity(userRequestDTO);
+            user.setPassword(userRequestDTO.getPassword());
+            user.setAddressShip(userRequestDTO.getAddressShip());
+            userRepository.save(user);
+
+            UserResponseDTO userResponseDTO = userConvert.toDTO(user);
+            return userResponseDTO;
+        }
+        return new UserResponseDTO();
     }
 }

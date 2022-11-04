@@ -29,4 +29,9 @@ public class UserController {
     public void deleteUser(@RequestParam Long userNo) {
         userService.deleteUser(userNo);
     }
+
+    @PutMapping("update-user")
+    public UserResponseDTO updateUser(@RequestBody UserRequestDTO userRequestDTO) {
+        return userService.updateUser(userRequestDTO);
+    }
 }
