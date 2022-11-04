@@ -132,7 +132,6 @@ public class OrderServiceImpl implements OrderService {
                     throw new NotFoundException("Order or User is null");
                 }
                 Order order = orderOptional.get();
-                order = orderConvert.toEntity(orderRequestDTO);
                 User user = userOptional.get();
                 order.setUser(user);
                 orderRepository.save(order);
@@ -143,7 +142,6 @@ public class OrderServiceImpl implements OrderService {
                 orderProduct.setProduct(product);
                 orderProducts.add(orderProduct);
             }
-                orderOptional.get().setOrderProducts(orderProducts);
                 orderProductRepository.saveAll(orderProducts);
 
                 OrderResponseDTO orderResponseDTO = orderConvert.toDTO(orderOptional.get());
