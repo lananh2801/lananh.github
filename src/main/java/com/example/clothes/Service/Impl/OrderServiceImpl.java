@@ -108,8 +108,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional
     @Override
-    public void deteleOrderById(Long id) {
+    public void deleteOrderById(Long id) {
             orderProductRepository.deleteOrderProductsByOrderNo(id);
-            orderRepository.deleteById(id);
+            orderRepository.deleteByOrderNo(id);
     }
 }

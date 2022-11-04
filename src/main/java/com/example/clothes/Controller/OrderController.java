@@ -24,6 +24,6 @@ public class OrderController {
 
     @DeleteMapping("delete-order")
     public void deleteOrderById(@RequestParam Long id) {
-        orderService.deteleOrderById(id);
+        orderService.deleteOrderById(id);
     }
 }

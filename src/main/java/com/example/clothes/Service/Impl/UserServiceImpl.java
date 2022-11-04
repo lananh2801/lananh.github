@@ -56,6 +56,6 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(Long userNo) {
         orderProductRepository.deleteOrderProductsByUserNo(userNo);
         orderRepository.deleteUserByUserNo(userNo);
-        userRepository.deleteById(userNo);
+        userRepository.deleteByUserNo(userNo);
     }
 }

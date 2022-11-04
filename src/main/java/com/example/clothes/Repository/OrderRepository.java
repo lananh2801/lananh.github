@@ -13,8 +13,8 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     public Order getOrderBy(Long id);
 
     @Modifying
-    @Query("delete from Order where oderNo = :id")
-    public void deleteById(Long id);
+    @Query("delete from Order where oderNo = :orderNo")
+    public void deleteByOrderNo(Long orderNo);
 
     @Modifying
     @Query("delete from Order where user.userNo = :userNo")
