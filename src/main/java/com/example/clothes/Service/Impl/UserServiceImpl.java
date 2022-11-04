@@ -68,8 +68,7 @@ public class UserServiceImpl implements UserService {
             if (!userOptional.isPresent()) {
                 throw new NotFoundException("User is null");
             }
-            User user = userOptional.get();
-            user = userConvert.toEntity(userRequestDTO);
+            User user = userConvert.toEntity(userRequestDTO);
             user.setPassword(userRequestDTO.getPassword());
             user.setAddressShip(userRequestDTO.getAddressShip());
             userRepository.save(user);
