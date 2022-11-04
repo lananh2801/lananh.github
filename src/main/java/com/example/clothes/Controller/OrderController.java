@@ -26,4 +26,9 @@ public class OrderController {
     public void deleteOrderById(@RequestParam Long id) {
         orderService.deleteOrderById(id);
     }
+
+    @PutMapping("update-order")
+    public OrderResponseDTO updateOrder(@RequestBody OrderRequestDTO orderRequestDTO) {
+        return orderService.updateOrder(orderRequestDTO);
+    }
 }
