@@ -5,16 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+@Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
-public class UserResponseDTO {
-
-    private Long userNo;
-    private String userName;
+public class RoleResponseDTO {
+    private Long roleNo;
     private String roleName;
-    private String gender;
-    private String addressShip;
+    private List<UserResponseDTO> userResponseDTOList;
 }
-
