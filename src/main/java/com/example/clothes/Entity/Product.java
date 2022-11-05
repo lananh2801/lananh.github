@@ -35,4 +35,7 @@ public class Product {
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private List<OrderProduct> orderProducts;
+
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    private List<BillImportProduct> billImportProductList;
 }
