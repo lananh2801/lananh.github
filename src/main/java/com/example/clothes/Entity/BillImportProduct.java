@@ -7,22 +7,21 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-@Entity
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
-@Table(name = "ODER_PRODUCT")
-public class OrderProduct {
-
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "BILL_IMPORT_PRODUCT")
+public class BillImportProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ODER_PRODUCT_NO")
-    private Long orderProductNo;
+    @Column(name = "BILL_PRODUCT_NO")
+    private Long BillProductNo;
 
     @ManyToOne()
-    @JoinColumn(name = "ODER_NO", nullable = false)
-    private Order order;
+    @JoinColumn(name = "BILL_NO", nullable = false)
+    private BillImport billImport;
 
     @ManyToOne()
     @JoinColumn(name = "PRODUCT_NO", nullable = false)

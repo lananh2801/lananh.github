@@ -36,4 +36,6 @@ public class User {
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
     private List<Order> orders;
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<BillImport> billImportList;
 }
