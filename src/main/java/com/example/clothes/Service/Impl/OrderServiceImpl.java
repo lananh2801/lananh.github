@@ -1,5 +1,6 @@
 package com.example.clothes.Service.Impl;
 
+import com.example.clothes.Constants.ExceptionConstant;
 import com.example.clothes.Convert.OrderConvert;
 import com.example.clothes.Convert.ProductConvert;
 import com.example.clothes.Convert.UserConvert;
@@ -129,7 +130,7 @@ public class OrderServiceImpl implements OrderService {
                 Optional<Product> productOptional = productRepository.findById(productRequestDTO.getProductNo());
 
                 if (!orderOptional.isPresent() || !userOptional.isPresent() || !productOptional.isPresent()) {
-                    throw new NotFoundException("Order or User is null");
+                    throw new NotFoundException(ExceptionConstant.ORDER_OR_USER_IS_NULL);
                 }
                 Order order = orderOptional.get();
                 User user = userOptional.get();

@@ -1,5 +1,6 @@
 package com.example.clothes.Service.Impl;
 
+import com.example.clothes.Constants.ExceptionConstant;
 import com.example.clothes.Convert.UserConvert;
 import com.example.clothes.DTO.Request.UserRequestDTO;
 import com.example.clothes.DTO.Response.UserResponseDTO;
@@ -35,7 +36,7 @@ public class UserServiceImpl implements UserService {
         if (userRequestDTO.getRoleNo() != null) {
             Optional<Role> role = roleRepository.findById(userRequestDTO.getRoleNo());
             if (!role.isPresent()) {
-                throw new NotFoundException("Role is null");
+                throw new NotFoundException(ExceptionConstant.ROLE_IS_NULL);
             }
             User user = userConvert.toEntity(userRequestDTO);
             user.setAddressShip(userRequestDTO.getAddressShip());
@@ -76,7 +77,7 @@ public class UserServiceImpl implements UserService {
         if (userRequestDTO.getUserNo() != null) {
             Optional<User> userOptional = userRepository.findById(userRequestDTO.getUserNo());
             if (!userOptional.isPresent()) {
-                throw new NotFoundException("User is null");
+                throw new NotFoundException(ExceptionConstant.USER_IS_NULL);
             }
             User user = userConvert.toEntity(userRequestDTO);
             user.setPassword(userRequestDTO.getPassword());
