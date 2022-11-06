@@ -6,4 +6,5 @@ import com.example.clothes.DTO.Response.RoleResponseDTO;
 public interface RoleService {
     RoleResponseDTO addRole(RoleRequestDTO roleRequestDTO);
     RoleResponseDTO getRoleById(Long id);
+    RoleResponseDTO updateRole(RoleRequestDTO roleRequestDTO);
 }

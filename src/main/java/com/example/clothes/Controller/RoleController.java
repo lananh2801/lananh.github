@@ -21,4 +21,9 @@ public class RoleController {
     public RoleResponseDTO getRoleById(@RequestParam Long id) {
         return roleService.getRoleById(id);
     }
+
+    @PutMapping("update-role")
+    public RoleResponseDTO updateRole(@RequestBody RoleRequestDTO roleRequestDTO) {
+        return roleService.updateRole(roleRequestDTO);
+    }
 }
