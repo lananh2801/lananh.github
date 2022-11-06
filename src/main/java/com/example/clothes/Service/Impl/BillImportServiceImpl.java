@@ -60,6 +60,7 @@ public class BillImportServiceImpl implements BillImportService {
         SupplierResponseDTO supplierResponseDTO = supplierConvert.toDTO(supplier);
         billImportResponseDTO.setSupplierResponseDTO(supplierResponseDTO);
         UserResponseDTO userResponseDTO = userConvert.toDTO(user);
+        userResponseDTO.setRoleName(user.getRole().getRoleName());
         billImportResponseDTO.setUserResponseDTO(userResponseDTO);
 
         List<ProductResponseDTO> productResponseDTOList = new ArrayList<>();
