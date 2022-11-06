@@ -68,6 +68,7 @@ public class OrderServiceImpl implements OrderService {
         Order orderGet = orderRepository.findById(order.getOderNo()).get();
         OrderResponseDTO orderResponseDTO = orderConvert.toDTO(orderGet);
         UserResponseDTO userResponseDTO = userConvert.toDTO(user);
+        userResponseDTO.setRoleName(user.getRole().getRoleName());
         orderResponseDTO.setUserResponseDTO(userResponseDTO);
 
         List<ProductResponseDTO> productResponseDTOList = new ArrayList<>();

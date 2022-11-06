@@ -7,9 +7,16 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     @Modifying
     @Query("delete from User where userNo = :userNo")
     public void deleteByUserNo(Long userNo);
+
+    @Query("SELECT u " +
+            "from User u " +
+            "WHERE u.role.roleNo = :roleNo")
+    List<User> getUsersByRoleNo(Long roleNo);
 }
