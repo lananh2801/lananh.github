@@ -5,15 +5,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
-public class UserRequestDTO {
-    private Long userNo;
-    private String userName;
+public class RoleRequestDTO {
     private Long roleNo;
-    private String gender;
-    private String addressShip;
-    private String password;
+    private String roleName;
 }

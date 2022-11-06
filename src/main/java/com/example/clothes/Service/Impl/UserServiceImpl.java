@@ -3,10 +3,12 @@ package com.example.clothes.Service.Impl;
 import com.example.clothes.Convert.UserConvert;
 import com.example.clothes.DTO.Request.UserRequestDTO;
 import com.example.clothes.DTO.Response.UserResponseDTO;
+import com.example.clothes.Entity.Role;
 import com.example.clothes.Entity.User;
 import com.example.clothes.Exception.NotFoundException;
 import com.example.clothes.Repository.OrderProductRepository;
 import com.example.clothes.Repository.OrderRepository;
+import com.example.clothes.Repository.RoleRepository;
 import com.example.clothes.Repository.UserRepository;
 import com.example.clothes.Service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -25,19 +27,27 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     @Autowired
     UserConvert userConvert;
-
     private final OrderRepository orderRepository;
-
     private final OrderProductRepository orderProductRepository;
+    private final RoleRepository roleRepository;
     @Override
     public UserResponseDTO addUser(UserRequestDTO userRequestDTO) {
-        User user = userConvert.toEntity(userRequestDTO);
-        user.setAddressShip(userRequestDTO.getAddressShip());
-        user.setPassword(userRequestDTO.getPassword());
-        user = userRepository.save(user);
+        if (userRequestDTO.getRoleNo() != null) {
+            Optional<Role> role = roleRepository.findById(userRequestDTO.getRoleNo());
+            if (!role.isPresent()) {
+                throw new NotFoundException("Role is null");
+            }
+            User user = userConvert.toEntity(userRequestDTO);
+            user.setAddressShip(userRequestDTO.getAddressShip());
+            user.setPassword(userRequestDTO.getPassword());
+            user.setRole(role.get());
+            user = userRepository.save(user);
 
-        UserResponseDTO userResponseDTO = userConvert.toDTO(user);
-        return userResponseDTO;
+            UserResponseDTO userResponseDTO = userConvert.toDTO(user);
+            userResponseDTO.setRoleName(user.getRole().getRoleName());
+            return userResponseDTO;
+        }
+        return new UserResponseDTO();
     }
 
     @Override

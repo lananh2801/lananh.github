@@ -1,7 +1,6 @@
 package com.example.clothes.Repository;
 
 import com.example.clothes.Entity.ProductType;
-import org.hibernate.sql.Select;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
