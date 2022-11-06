@@ -14,6 +14,7 @@ import com.example.clothes.Repository.UserRepository;
 import com.example.clothes.Service.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +54,22 @@ public class RoleServiceImpl implements RoleService {
             RoleResponseDTO roleResponseDTO = roleConvert.toDTO(roleOptional.get());
             roleResponseDTO.setUserResponseDTOList(userResponseDTOList);
             return roleResponseDTO;
+        }
+        return new RoleResponseDTO();
+    }
+
+    @Override
+    public RoleResponseDTO updateRole(RoleRequestDTO roleRequestDTO) {
+        if (roleRequestDTO.getRoleNo() != null) {
+           Optional<Role> roleGet = roleRepository.findById(roleRequestDTO.getRoleNo());
+           if (!roleGet.isPresent()) {
+               throw new NotFoundException(ExceptionConstant.ROLE_IS_NULL);
+           }
+           Role role = roleConvert.toEntity(roleRequestDTO);
+           roleRepository.save(role);
+
+           RoleResponseDTO roleResponseDTO = roleConvert.toDTO(role);
+           return roleResponseDTO;
         }
         return new RoleResponseDTO();
     }
