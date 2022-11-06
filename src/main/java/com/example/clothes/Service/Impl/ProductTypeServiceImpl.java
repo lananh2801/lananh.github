@@ -1,5 +1,6 @@
 package com.example.clothes.Service.Impl;
 
+import com.example.clothes.Constants.ExceptionConstant;
 import com.example.clothes.Convert.ProductTypeConvert;
 import com.example.clothes.DTO.Request.ProductTypeRequestDTO;
 import com.example.clothes.DTO.Response.ProductTypeResponseDTO;
@@ -53,7 +54,7 @@ public class ProductTypeServiceImpl implements ProductTypeService {
         if (productTypeRequestDTO.getProductTypeNo() != null) {
             Optional<ProductType> productTypeOptional = productTypeRepository.findById(productTypeRequestDTO.getProductTypeNo());
             if (!productTypeOptional.isPresent()) {
-                throw new NotFoundException("ProductType is null");
+                throw new NotFoundException(ExceptionConstant.PRODUCT_TYPE_IS_NULL);
             }
             ProductType productType = productTypeConvert.toEntity(productTypeRequestDTO);
 

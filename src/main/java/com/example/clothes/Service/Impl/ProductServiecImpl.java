@@ -1,5 +1,6 @@
 package com.example.clothes.Service.Impl;
 
+import com.example.clothes.Constants.ExceptionConstant;
 import com.example.clothes.Convert.ProductConvert;
 import com.example.clothes.DTO.Request.ProductRequestDTO;
 import com.example.clothes.DTO.Response.ProductResponseDTO;
@@ -32,7 +33,7 @@ public class ProductServiecImpl implements ProductService {
         if (productRequestDTO.getProductTypeNo() != null) {
             Optional<ProductType> productType = productTypeRepository.findById(productRequestDTO.getProductTypeNo());
             if (!productType.isPresent() ) {
-                throw new NotFoundException("ProductType is null");
+                throw new NotFoundException(ExceptionConstant.PRODUCT_TYPE_IS_NULL);
             }
                 Product product = productConvert.toEntity(productRequestDTO);
                 product.setProductType(productType.get());
@@ -62,7 +63,7 @@ public class ProductServiecImpl implements ProductService {
             Optional<Product> productOptional = productRepository.findById(productRequestDTO.getProductNo());
             Optional<ProductType> productTypeOptional = productTypeRepository.findById(productRequestDTO.getProductTypeNo());
             if (!productOptional.isPresent() || !productTypeOptional.isPresent()) {
-                throw new NotFoundException("Product or ProductType is null");
+                throw new NotFoundException(ExceptionConstant.PRODUCT_TYPE_OR_PRODUCT_IS_NULL);
             }
             Product product = productConvert.toEntity(productRequestDTO);
             ProductType productType = productTypeOptional.get();
