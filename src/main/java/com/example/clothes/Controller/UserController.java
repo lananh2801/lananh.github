@@ -38,4 +38,8 @@ public class UserController {
     public UserResponseDTO registerUser(@RequestBody UserRequestDTO userRequestDTO) {
         return userService.registerUser(userRequestDTO);
     }
+    @GetMapping("login")
+    public UserResponseDTO login(@RequestBody UserRequestDTO userRequestDTO) {
+        return userService.login(userRequestDTO);
+    }
 }
