@@ -34,4 +34,8 @@ public class UserController {
     public UserResponseDTO updateUser(@RequestBody UserRequestDTO userRequestDTO) {
         return userService.updateUser(userRequestDTO);
     }
+    @PostMapping("register-user")
+    public UserResponseDTO registerUser(@RequestBody UserRequestDTO userRequestDTO) {
+        return userService.registerUser(userRequestDTO);
+    }
 }
