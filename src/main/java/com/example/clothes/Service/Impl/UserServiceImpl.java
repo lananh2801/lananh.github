@@ -113,4 +113,20 @@ public class UserServiceImpl implements UserService {
             }
         return new UserResponseDTO();
     }
+
+    @Override
+    public UserResponseDTO login(UserRequestDTO userRequestDTO) {
+
+        if (userRepository.getUserByUserName(userRequestDTO.getUserName()) == null ||
+            userRepository.getUsersByPassword(userRequestDTO.getPassword()).isEmpty()) {
+            throw new NotFoundException(ExceptionConstant.USER_NAME_OR_PASSWORD_IS_NOT_EXIST);
+        }
+        if (!userRepository.getUserByUserName(userRequestDTO.getUserName()).getPassword().equals(userRequestDTO.getPassword())) {
+            throw new NotFoundException(ExceptionConstant.USER_NAME_OR_PASSWORD_IS_NOT_EXIST);
+        }
+        User user = userRepository.getUserByUserName(userRequestDTO.getUserName());
+        UserResponseDTO userResponseDTO = userConvert.toDTO(user);
+        userResponseDTO.setRoleName(user.getRole().getRoleName());
+        return userResponseDTO;
+    }
 }

@@ -15,4 +15,5 @@ public interface UserService {
 
     UserResponseDTO updateUser(UserRequestDTO userRequestDTO);
     UserResponseDTO registerUser(UserRequestDTO userRequestDTO);
+    UserResponseDTO login(UserRequestDTO userRequestDTO);
 }
