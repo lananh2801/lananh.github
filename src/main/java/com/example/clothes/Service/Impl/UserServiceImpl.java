@@ -6,6 +6,7 @@ import com.example.clothes.DTO.Request.UserRequestDTO;
 import com.example.clothes.DTO.Response.UserResponseDTO;
 import com.example.clothes.Entity.Role;
 import com.example.clothes.Entity.User;
+import com.example.clothes.Exception.Exception;
 import com.example.clothes.Exception.NotFoundException;
 import com.example.clothes.Repository.OrderProductRepository;
 import com.example.clothes.Repository.OrderRepository;
@@ -87,6 +88,29 @@ public class UserServiceImpl implements UserService {
             UserResponseDTO userResponseDTO = userConvert.toDTO(user);
             return userResponseDTO;
         }
+        return new UserResponseDTO();
+    }
+
+    @Override
+    public UserResponseDTO registerUser(UserRequestDTO userRequestDTO) {
+        if (userRequestDTO.getRoleNo() != null) {
+            Optional<Role> role = roleRepository.findById(userRequestDTO.getRoleNo());
+            if (!role.isPresent()) {
+                throw new NotFoundException(ExceptionConstant.ROLE_IS_NULL);
+            }
+            if (!(userRepository.getUsersByUserName(userRequestDTO.getUserName())).isEmpty()) {
+                    throw new Exception(ExceptionConstant.USER_NAME_IS_EXIST);
+                }
+                User user = userConvert.toEntity(userRequestDTO);
+                user.setAddressShip(userRequestDTO.getAddressShip());
+                user.setPassword(userRequestDTO.getPassword());
+                user.setRole(role.get());
+                userRepository.save(user);
+
+                UserResponseDTO userResponseDTO = userConvert.toDTO(user);
+                userResponseDTO.setRoleName(user.getRole().getRoleName());
+                return userResponseDTO;
+            }
         return new UserResponseDTO();
     }
 }
