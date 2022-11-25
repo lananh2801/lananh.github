@@ -32,6 +32,7 @@ public class UserServiceImpl implements UserService {
     private final OrderRepository orderRepository;
     private final OrderProductRepository orderProductRepository;
     private final RoleRepository roleRepository;
+
     @Override
     public UserResponseDTO addUser(UserRequestDTO userRequestDTO) {
         if (userRequestDTO.getRoleNo() != null) {
@@ -65,6 +66,7 @@ public class UserServiceImpl implements UserService {
         }
         return userResponseDTOList;
     }
+
     @Transactional
     @Override
     public void deleteUser(Long userNo) {
@@ -93,25 +95,27 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDTO registerUser(UserRequestDTO userRequestDTO) {
-        if (userRequestDTO.getRoleNo() != null) {
-            Optional<Role> role = roleRepository.findById(userRequestDTO.getRoleNo());
-            if (!role.isPresent()) {
-                throw new NotFoundException(ExceptionConstant.ROLE_IS_NULL);
-            }
-            if (!(userRepository.getUsersByUserName(userRequestDTO.getUserName())).isEmpty()) {
-                    throw new Exception(ExceptionConstant.USER_NAME_IS_EXIST);
-                }
-                User user = userConvert.toEntity(userRequestDTO);
-                user.setAddressShip(userRequestDTO.getAddressShip());
-                user.setPassword(userRequestDTO.getPassword());
-                user.setRole(role.get());
-                userRepository.save(user);
+        if (userRequestDTO.getRoleNo() == null ||
+            userRequestDTO.getUserName() == null ||
+            userRequestDTO.getPassword() == null) {
+            throw new NotFoundException(ExceptionConstant.USER_NAME_OR_PASSWORD_OR_ROLE_IS_NULL);
+        }
+        Optional<Role> role = roleRepository.findById(userRequestDTO.getRoleNo());
+        if (!role.isPresent()) {
+            throw new NotFoundException(ExceptionConstant.ROLE_IS_NULL);
+        }
+        if ((userRepository.getUserByUserName(userRequestDTO.getUserName())) != null) {
+            throw new Exception(ExceptionConstant.USER_NAME_IS_EXIST);
+        }
+        User user = userConvert.toEntity(userRequestDTO);
+        user.setAddressShip(userRequestDTO.getAddressShip());
+        user.setPassword(userRequestDTO.getPassword());
+        user.setRole(role.get());
+        userRepository.save(user);
 
-                UserResponseDTO userResponseDTO = userConvert.toDTO(user);
-                userResponseDTO.setRoleName(user.getRole().getRoleName());
-                return userResponseDTO;
-            }
-        return new UserResponseDTO();
+        UserResponseDTO userResponseDTO = userConvert.toDTO(user);
+        userResponseDTO.setRoleName(user.getRole().getRoleName());
+        return userResponseDTO;
     }
 
     @Override
