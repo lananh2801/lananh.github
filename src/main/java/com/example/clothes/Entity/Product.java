@@ -28,7 +28,7 @@ public class Product {
     @Column(name = "PRICE")
     private BigDecimal price;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "PRODUCT_TYPE_NO", nullable = false)
     private ProductType productType;
 

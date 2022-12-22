@@ -21,7 +21,7 @@ public class Order {
     @Column(name = "ORDER_NO")
     private Long oderNo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "USER_NO", nullable = false)
     private User user;
 

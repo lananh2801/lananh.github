@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ProductServiecImpl implements ProductService {
+public class ProductServiceImpl implements ProductService {
 
     @Autowired
     ProductRepository productRepository;
@@ -54,6 +54,7 @@ public class ProductServiecImpl implements ProductService {
     }
     @Override
     public void deleteProduct(Long id) {
+
         productRepository.deleteProductById(id);
     }
 

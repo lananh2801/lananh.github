@@ -91,7 +91,11 @@ public class OrderServiceImpl implements OrderService {
 
         if (orderOptional.isPresent()) {
             Order order = orderOptional.get();
-            OrderResponseDTO orderDTO = orderConvert.toDTO(order);
+            OrderResponseDTO orderResponseDTO= orderConvert.toDTO(order);
+            User user = userRepository.getById(order.getUser().getUserNo());
+            UserResponseDTO userResponseDTO = userConvert.toDTO(user);
+            userResponseDTO.setRoleName(user.getRole().getRoleName());
+            orderResponseDTO.setUserResponseDTO(userResponseDTO);
 
             List<ProductResponseDTO> productResponseDTOList = new ArrayList<>();
 
@@ -103,9 +107,9 @@ public class OrderServiceImpl implements OrderService {
 
                 totalAmount = totalAmount.add(orderProduct.getProduct().getPrice());
             }
-            orderDTO.setAmountOfMoney(totalAmount);
-            orderDTO.setProductResponseDTOList(productResponseDTOList);
-            return orderDTO;
+            orderResponseDTO.setAmountOfMoney(totalAmount);
+            orderResponseDTO.setProductResponseDTOList(productResponseDTOList);
+            return orderResponseDTO;
         }
         return new OrderResponseDTO();
     }

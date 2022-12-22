@@ -27,14 +27,14 @@ public class BillImport {
     @Column(name = "CONTENT")
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "USER_NO", nullable = false)
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "SUPPLIER_NO", nullable = false)
     private Supplier supplier;
 
-    @OneToMany(mappedBy = "billImport",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "billImport", fetch = FetchType.LAZY)
     private List<BillImportProduct> billImportProductList;
 }
